@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escadrila — Forța Aeriană Română</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- RESET & CROMATICĂ VERDE TACTIC / OLIVE --- */
+        :root {
+            --bg-dark: #090e0b;
+            --bg-card: #111a14;
+            --accent-olive: #6b8e23;
+            --accent-olive-bright: #8aa832;
+            --text-white: #f0f4f1;
+            --text-gray: #889e90;
+            --border-color: rgba(107, 142, 35, 0.25);
+            --shadow-olive: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(107, 142, 35, 0.15);
+            --font-heading: 'Montserrat', sans-serif;
+            --font-sans: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(107, 142, 35, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(45, 66, 48, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(15, 24, 19, 1) 0%, rgba(9, 14, 11, 1) 100%);
+            background-attachment: fixed;
+            color: var(--text-white);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .loader-logo {
+            width: 90px;
+            margin-bottom: 25px;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .loader-bar-container {
+            width: 160px;
+            height: 2px;
+            background: var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar {
+            width: 100%;
+            height: 100%;
+            background: var(--accent-olive-bright);
+            position: absolute;
+            left: -100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            100% { left: 100%; }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(9, 14, 11, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            height: 35px;
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--text-gray);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-olive-bright);
+        }
+
+        .shop-btn {
+            border: 1px solid var(--accent-olive-bright);
+            color: var(--accent-olive-bright);
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 2px;
+            background: rgba(107, 142, 35, 0.08);
+        }
+
+        .shop-btn:hover {
+            background: var(--accent-olive-bright);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(138, 168, 50, 0.4);
+        }
+
+        /* --- HERO --- */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+            background: radial-gradient(circle, rgba(107, 142, 35, 0.15) 0%, rgba(9, 14, 11, 0.95) 75%);
+            position: relative;
+            overflow: hidden; /* Împiedică logo-ul mare să creeze scroll orizontal */
+        }
+
+/* LOGO FUNDAL - VIZIBIL ȘI CLAR */
+.hero-bg-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 680px;
+    max-width: 85vw;
+    
+    /* Controlăm vizibilitatea DOAR prin opacitate curată: */
+    opacity: 0.23; 
+    filter: drop-shadow(0 0 20px rgba(138, 168, 50, 0.3)); /* Strălucire fină măslinie */
+    
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2; /* Asigură că textul stă deasupra watermark-ului */
+}
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: var(--accent-olive-bright);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .hero-badge .line {
+            width: 30px;
+            height: 1px;
+            background: var(--accent-olive-bright);
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent-olive-bright);
+        }
+
+        .hero-subtitle {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-white);
+        }
+
+        .hero-cta:hover {
+            color: var(--accent-olive-bright);
+        }
+
+        /* --- LOGO REVEAL --- */
+        .logo-reveal-section {
+            padding: 100px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            background: rgba(17, 26, 20, 0.4);
+        }
+
+        .insignia-box {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            background: var(--bg-card);
+            box-shadow: var(--shadow-olive);
+        }
+
+        .reveal-logo {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .reveal-title {
+            font-family: var(--font-heading);
+            letter-spacing: 12px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .reveal-subtitle {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- STATS --- */
+        .stats-section {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 60px 10%;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(14, 22, 17, 0.8);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-olive-bright);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: var(--border-color);
+        }
+
+        /* --- ABOUT --- */
+        .about-section {
+            padding: 120px 10%;
+        }
+
+        .section-tag {
+            color: var(--accent-olive-bright);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .about-title {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .about-body p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .link-arrow {
+            color: var(--accent-olive-bright);
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* --- MEDIA --- */
+        .media-section {
+            padding: 100px 10%;
+            background: rgba(12, 19, 14, 0.7);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .media-card {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-olive);
+        }
+
+        .media-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .media-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(9, 14, 11, 0.95), transparent);
+        }
+
+        .card-badge {
+            color: var(--accent-olive-bright);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .card-desc {
+            color: var(--text-white);
+            font-size: 0.95rem;
+        }
+
+        /* --- CONTACT --- */
+        .contact-section {
+            padding: 120px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            margin: 20px 0 30px;
+            text-transform: uppercase;
+        }
+
+        .email-link {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 4vw, 3.2rem);
+            font-weight: 900;
+            color: var(--accent-olive-bright);
+            letter-spacing: 2px;
+        }
+
+        .contact-subtext {
+            color: var(--text-gray);
+            margin-top: 20px;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 5%;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            background: #060a08;
+        }
+/* CONTAINER SOCIAL LINKS */
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Spațiul dintre butoane */
+    margin-top: 25px;
+}
+
+/* BUTOANELE SOCIALE MARI */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;  /* Mărit de la dimensiunea standard */
+    height: 60px; /* Mărit pentru un aspect pătrățos/rotunjit masiv */
+    background: rgba(138, 168, 50, 0.1); /* Fundal fin măsliniu */
+    border: 1px solid var(--accent-olive, #8aa832);
+    border-radius: 12px;
+    color: var(--accent-olive, #8aa832);
+    font-size: 28px; /* Mărește iconița propriu-zisă */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* EFECT LA HOVER (CÂND TRECI CU MOUSE-UL) */
+.social-btn:hover {
+    background: #8aa832;
+    color: #0d0f0d; /* Iconița devine neagră pe fundal verde */
+    transform: translateY(-4px) scale(1.08); /* Se ridică și se mărește ușor */
+    box-shadow: 0 8px 20px rgba(138, 168, 50, 0.4);
+}
+
+/* DACA FOLOSEȘTI SVG DIRECT ÎN LOC DE FONTAWESOME */
+.social-btn svg {
+    width: 32px;
+    height: 32px;
+}
+        .motto {
+            font-style: italic;
+        }
+
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; gap: 30px; }
+            .media-grid { grid-template-columns: 1fr; }
+            .stats-section { flex-direction: column; gap: 30px; }
+            .stat-divider { display: none; }
+            .nav-links { display: none; }
+            .footer { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="logo.png" alt="Escadrila Logo" class="loader-logo">
+        <div class="loader-bar-container">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="logo.png" alt="Logo" class="nav-logo">
+            <span class="brand-name">Escadrila</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#hero">HOME</a></li>
+            <li><a href="#despre">DESPRE NOI</a></li>
+            <li><a href="#poze">MEDIA</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="indexshop.html" class="shop-btn">SHOP</a>
+        </div>
+    </nav>
+
+   <!-- HERO SECTION -->
+<section id="hero" class="hero-section">
+    <!-- LOGO WATERMARK PE FUNDAL -->
+    <img src="logo2.png" alt="" class="hero-bg-watermark">
+
+    <div class="hero-content">
+        <p class="hero-badge">
+            <span class="line"></span>
+            Forțele Aeriene Române
+            <span class="line"></span>
+        </p>
+        <h1 class="hero-title">
+            <span>DECOLEAZĂ</span>
+            <span>ÎN <em>NOUA ERĂ</em></span>
+        </h1>
+        <p class="hero-subtitle">Cerul nu este limita — este doar începutul.</p>
+        <a href="#logo-reveal" class="hero-cta">
+            <span>Descoperă</span>
+            <span class="arrow-down">↓</span>
+        </a>
+    </div>
+</section>
+
+    <!-- LOGO REVEAL SECTION -->
+    <section id="logo-reveal" class="logo-reveal-section">
+        <div class="reveal-container">
+            <div class="insignia-box">
+                <img src="logo.png" alt="Escadrila Insignia" class="reveal-logo">
+            </div>
+            <h2 class="reveal-title">E S C A D R I L A</h2>
+            <p class="reveal-subtitle">Comunitatea celor iubitori de aviație</p>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section">
+        <div class="stat-item">
+            <span class="stat-number" data-target="113">0</span>
+            <span class="stat-label">Ani de istorie</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="24">0</span>
+            <span class="stat-label">Aeronave operate</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="5">0</span>
+            <span class="stat-label">Baze aeriene</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-number" data-target="115">0</span>
+            <span class="stat-label">Generații de piloți</span>
+        </div>
+    </section>
+
+    <!-- DESPRE NOI SECTION -->
+    <section id="despre" class="about-section">
+        <div class="about-grid">
+            <div class="about-header">
+                <span class="section-tag">1 — Cine suntem</span>
+                <h3 class="about-title">Dacă iubești cerul și tot ce ține de el,<br> ești deja în Escadrila noastră.</h3>
+            </div>
+            <div class="about-body">
+                <p>
+                    Escadrila reunește pasionații aviației militare din România — 
+                    oameni care cred că tradiția și viitorul pot zbura împreună.
+                    De la piste istorice la cer deschis, noi suntem povestea lor.
+                </p>
+                <p>
+                    Nu suntem doar o comunitate. Suntem o misiune.
+                </p>
+                <a href="despre.html" class="link-arrow">Află mai mult →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEDIA SECTION -->
+    <section id="poze" class="media-section">
+        <span class="section-tag">2 — Arhivă Din Zbor</span>
+        <div class="media-grid">
+            <div class="media-card">
+                <img src="5.jpg" alt="Misiune Noapte">
+                <div class="media-overlay">
+                    <span class="card-badge">Misiune IAR-99 ȘOIM</span>
+                    <p class="card-desc">Antrenament tactic deasupra Carpaților.</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="8.jpg" alt="Patch HAI FETIȚO la ÎNALȚIME  ">
+                <div class="media-overlay">
+                    <span class="card-badge">IAR-99 ȘOIM</span>
+                    <p class="card-desc">Când emblema IAR-99 ȘOIM reușește să atinga norii</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="1.mov" alt="Formație IAR-99 ȘOIM">
+                <div class="media-overlay">
+                    <span class="card-badge">IAR-99 ȘOIM</span>
+                    <p class="card-desc">Excelență în echipă.</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="2.jpeg" alt="Cockpit C-27J  ">
+                <div class="media-overlay">
+                    <span class="card-badge">Orizont</span>
+                    <p class="card-desc">Patrulare aeriană NATO.</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="3.jpeg" alt="Cockpit C-27J  ">
+                <div class="media-overlay">
+                    <span class="card-badge">NVG</span>
+                    <p class="card-desc">Zbor de noapte.</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="4.jpeg" alt="Formație IAR-99 ȘOIM  ">
+                <div class="media-overlay">
+                    <span class="card-badge">Frumusețea zborului la nivel de formație</span>
+                    <p class="card-desc">Team Work, Dream Work</p>
+                </div>
+            </div>
+            <div class="media-card">
+                <img src="6.jpg" alt="C-27J Spartan ">
+                <div class="media-overlay">
+                    <span class="card-badge">Aterizare</span>
+                    <p class="card-desc">Sneak peak</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+        <span class="section-tag">3 — Contact</span>
+        <h2 class="contact-title">Ești gata să te alături?</h2>
+        <a href="mailto:contact@escadrila.ro" class="email-link">CONTACT@ESCADRILA.RO</a>
+        <p class="contact-subtext">Vino în hangarul nostru digital.</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>© 2026 Escadrila România</span>
+        <span class="motto">Sky is not the limit</span>
+        <div class="social-links">
+            <!-- Link INSTAGRAM -->
+    <a href="https://www.instagram.com/escadrila.project/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+
+    <!-- Link TIKTOK (Înlocuit Facebook) -->
+    <a href="https://www.tiktok.com/@escadrila5?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+    </a>
+        </div>
+    </footer>
+
+    <!-- SCRIPT JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // FORȚEAZĂ SCROLL-UL SUS DE TOT LA REFRESH
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+            const preloader = document.getElementById("preloader");
+            window.addEventListener("load", () => {
+                setTimeout(() => {
+                    preloader.style.opacity = "0";
+                    preloader.style.visibility = "hidden";
+                }, 600);
+            });
+
+            const counters = document.querySelectorAll('.stat-number');
+            let animated = false;
+
+            const startCounters = () => {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const updateCount = () => {
+                        const count = +counter.innerText;
+                        const inc = target / 100;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 30);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            window.addEventListener('scroll', () => {
+                const statsSection = document.querySelector('.stats-section');
+                if (!statsSection) return;
+                const sectionPos = statsSection.getBoundingClientRect().top;
+                if (sectionPos < window.innerHeight / 1.2 && !animated) {
+                    startCounters();
+                    animated = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
